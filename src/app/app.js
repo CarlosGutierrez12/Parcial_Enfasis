@@ -1,8 +1,10 @@
 const express =  require("express");
 const cors = require("cors");
 
-
 const config = require("../config");
+
+const estudiantes = require("../routes/estudiante.routes");
+
 
 const app = express();
 
@@ -20,6 +22,9 @@ app.use(express.urlencoded({extended:true}));
 
 //config
 app.set('port', config.app.port);
+
+//Rutas
+app.use("/estudiantes", estudiantes);
 
 //End ponit not found
 app.use((req,res,next)=>{

@@ -1,5 +1,5 @@
 /node_modules/
 .env
-/src/routes
-/src/controllers/
-/src/models/
+/src/routes/rol.routes.js
+/src/controllers/rol.controller.js
+/src/models/rol.model.js

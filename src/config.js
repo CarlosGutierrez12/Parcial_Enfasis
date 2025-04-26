@@ -7,6 +7,6 @@ module.exports = {
         port: process.env.MYSQL_PORT || 3306,
         user: process.env.MYSQL_USER || 'root',
         password: process.env.MYSQL_PASSWORD || 'docker',
-        database: process.env.MYSQL_DATABASE || 'cecep_dashboardauth',
+        database: process.env.MYSQL_DATABASE || 'cecep_parcial_enfasis',
     }
 };
