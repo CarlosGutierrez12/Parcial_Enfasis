@@ -5,6 +5,7 @@ const config = require("../config");
 
 const estudiantes = require("../routes/estudiante.routes");
 const cursos = require("../routes/curso.routes");
+const matriculas = require("../routes/matricula.routes");
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.set('port', config.app.port);
 //Rutas
 app.use("/estudiantes", estudiantes);
 app.use("/cursos", cursos);
+app.use("/matriculas", matriculas);
 
 //End ponit not found
 app.use((req,res,next)=>{
