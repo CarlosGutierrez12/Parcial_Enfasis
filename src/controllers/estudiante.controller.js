@@ -1,15 +1,17 @@
 const Estudiante = require("../models/estudiante.model");
+const Matricula = require("../models/matricula.model");
+const Curso = require("../models/curso.model");
 const response = require("../res/response");
 
 const getAll = async(req, res, next)=>{
     try {    
-        const Estudiantes = await Estudiante.findAll({
+        const estudiante = await Estudiante.findAll({
         });
         let data = "";
-        if (Estudiantes.length>0) {
+        if (estudiante.length>0) {
             data = { 
-                total_registros: Estudiantes.length,
-                registros: Estudiantes
+                total_registros: estudiante.length,
+                registros: estudiante
             }
         } else {
             data = {
@@ -25,12 +27,12 @@ const getAll = async(req, res, next)=>{
 const getOne = async (req,res,next)=>{
     try {
         const id = req.params.id;
-        const Estudiante = await Estudiante.findOne({where:{id},
+        const estudiante = await Estudiante.findOne({where:{id},
         },)
         let data = "";
-        if (Estudiante) {
+        if (estudiante) {
             data = {
-                registro: Estudiante
+                registro: estudiante
             }
         } else {
             data = {
@@ -42,6 +44,34 @@ const getOne = async (req,res,next)=>{
         next(error)
     }
 };
+
+const getCursos = async (req,res,next)=>{
+    try {
+        const id = req.params.id;
+        const matricula = await Matricula.findOne({
+            where: { estudianteId: id },
+            include: [{
+              model: Curso,       
+              attributes: ['nombre'] 
+            }]
+        });
+          
+        if (matricula) {
+            data = { 
+                total_registros: matricula.length,
+                cursos: matricula.Curso.nombre
+            }
+        } else {
+            data = {
+                message: "El estudiante no tiene cursos matriculados"
+            }
+        } 
+        response.success(req,res,data,200);
+    } catch (error) {
+        response.error(req,res,error.message,500)
+    }
+};
+
 
 const create = async (req,res,next)=>{
     try {
@@ -98,6 +128,7 @@ const deleted = async (req,res,next)=>{
 module.exports = {
     getAll,
     getOne,
+    getCursos,
     create,
     update,
     deleted,

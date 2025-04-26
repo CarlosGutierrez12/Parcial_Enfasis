@@ -4,6 +4,7 @@ const controller = require("../controllers/estudiante.controller");
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getOne);
+router.get("/:id/cursos", controller.getCursos);
 
 router.post("/", controller.create);
 
