@@ -4,6 +4,8 @@ const controller = require("../controllers/curso.controller");
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getOne);
+router.get("/:id/estudiantes", controller.getEstudiantes);
+
 router.post("/", controller.create);
 router.put("/:id",  controller.update);
 router.delete("/:id",  controller.deleted);

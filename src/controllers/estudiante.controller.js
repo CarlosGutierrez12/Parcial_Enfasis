@@ -45,33 +45,37 @@ const getOne = async (req,res,next)=>{
     }
 };
 
-const getCursos = async (req,res,next)=>{
+const getCursos = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const matricula = await Matricula.findOne({
-            where: { estudianteId: id },
-            include: [{
-              model: Curso,       
-              attributes: ['nombre'] 
-            }]
+      const id = req.params.id;
+      const matriculas = await Matricula.findAll({
+        where: { estudianteId: id },
+        include: [{
+          model: Curso,
+          attributes: ['nombre']
+        }]
+      });
+  
+      if (matriculas && matriculas.length > 0) {
+        const cursos = matriculas.map(matricula => {
+          return matricula.Curso.nombre;
         });
-          
-        if (matricula) {
-            data = { 
-                total_registros: matricula.length,
-                cursos: matricula.Curso.nombre
-            }
-        } else {
-            data = {
-                message: "El estudiante no tiene cursos matriculados"
-            }
-        } 
-        response.success(req,res,data,200);
+  
+        data = {
+          total_registros: matriculas.length,
+          cursos: cursos
+        };
+      } else {
+        data = {
+          message: "El estudiante no tiene cursos matriculados"
+        };
+      }
+  
+      response.success(req, res, data, 200);
     } catch (error) {
-        response.error(req,res,error.message,500)
+      response.error(req, res, error.message, 500);
     }
 };
-
 
 const create = async (req,res,next)=>{
     try {

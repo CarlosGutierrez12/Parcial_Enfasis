@@ -1,5 +1,8 @@
+const Matricula = require("../models/matricula.model");
 const Curso = require("../models/curso.model");
+
 const response = require("../res/response");
+const Estudiante = require("../models/estudiante.model");
 
 const getAll = async(req, res, next)=>{
     try {    
@@ -38,6 +41,37 @@ const getOne = async (req,res,next)=>{
         response.success(req,res,data,200);
     } catch (error) {
         next(error)
+    }
+};
+
+const getEstudiantes = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const matriculas = await Matricula.findAll({
+        where: { cursoId: id },
+        include: [{
+          model: Estudiante,
+          attributes: ['id', 'nombre', 'apellido']
+        }]
+      });
+  
+      if (matriculas && matriculas.length > 0) {
+        const estudiantes = matriculas.map(matricula => {
+          return {
+            estudiantes_id: matricula.Estudiante.id,
+            nombre_estudiantes: `${matricula.Estudiante.nombre} ${matricula.Estudiante.apellido}`
+          };
+        });
+        
+        data = estudiantes;
+      } else {
+        data = {
+          message: "El curso no tiene estudiantes matriculados"
+        };
+      }
+      response.success(req, res, data, 200);
+    } catch (error) {
+      response.error(req, res, error.message, 500);
     }
 };
 
@@ -95,6 +129,7 @@ const deleted = async (req,res,next)=>{
 module.exports = {
     getAll,
     getOne,
+    getEstudiantes,
     create,
     update,
     deleted
